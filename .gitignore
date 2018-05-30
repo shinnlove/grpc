@@ -27,7 +27,7 @@ hs_err_pid*
 .classpath
 *.prefs
 *.bat
-target/protoc
+target
 *.class
 bin
 .DS_Store

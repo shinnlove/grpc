@@ -9,6 +9,9 @@ import java.io.IOException;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
+import protobuf.hello.HelloRequest;
+import protobuf.hello.HelloResponse;
+import protobuf.hello.HelloServiceGrpc;
 
 /**
  * gRpc的服务端。
@@ -70,13 +73,13 @@ public class HelloServer {
     /**
      * 实现服务接口的类
      */
-    private class HelloServiceImpl extends grpc.proto.HelloServiceGrpc.HelloServiceImplBase {
+    private class HelloServiceImpl extends HelloServiceGrpc.HelloServiceImplBase {
 
         @Override
-        public void sayHello(grpc.proto.HelloRequest req,
-                             StreamObserver<grpc.proto.HelloResponse> responseObserver) {
+        public void sayHello(HelloRequest req,
+                             StreamObserver<HelloResponse> responseObserver) {
             // 构建返回结果对象
-            grpc.proto.HelloResponse reply = grpc.proto.HelloResponse.newBuilder()
+            HelloResponse reply = HelloResponse.newBuilder()
                 .setMessage("hello " + req.getName()).build();
             // 将返回结果传入stream，返回调用方
             responseObserver.onNext(reply);

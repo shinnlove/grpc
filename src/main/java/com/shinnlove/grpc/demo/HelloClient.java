@@ -6,6 +6,9 @@ package com.shinnlove.grpc.demo;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import protobuf.hello.HelloRequest;
+import protobuf.hello.HelloResponse;
+import protobuf.hello.HelloServiceGrpc;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,13 +28,13 @@ public class HelloClient {
     private final ManagedChannel                                       channel;
 
     /** 客户端本地服务存根 */
-    private final grpc.proto.HelloServiceGrpc.HelloServiceBlockingStub blockingStub;
+    private final HelloServiceGrpc.HelloServiceBlockingStub blockingStub;
 
     public HelloClient(String host, int port) {
         // 初始化端口套接字连接
         channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
         // 在套接字通道上建立blocking存根
-        blockingStub = grpc.proto.HelloServiceGrpc.newBlockingStub(channel);
+        blockingStub = HelloServiceGrpc.newBlockingStub(channel);
     }
 
     /**
@@ -52,9 +55,9 @@ public class HelloClient {
      */
     public String sayHello(String name){
         // 构造服务调用参数对象
-        grpc.proto.HelloRequest request = grpc.proto.HelloRequest.newBuilder().setName(name).build();
+        HelloRequest request = HelloRequest.newBuilder().setName(name).build();
         // 调用远程服务方法(直接将本地存根视为服务调用)
-        grpc.proto.HelloResponse response = blockingStub.sayHello(request);
+        HelloResponse response = blockingStub.sayHello(request);
         // 返回调用结果
         return response.getMessage();
     }
